@@ -4,24 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo da Forca</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Jogo da Forca</h1>
-    <button id="themeToggle" class="btn-theme">🌙 Modo Escuro</button>
-    <div id="category" class="category"></div>
-    <canvas id="hangmanCanvas" width="200"></canvas>
-    <div id="word" class="word"></div>
-    <div id="wordDefinition" class="word-definition"></div>
-    <div id="letters" class="letters"></div>
-    <div id="message" class="message"></div>
+  <h1>Jogo da Forca</h1>
 
-    <button id="infiniteBtn" class="btn-infinite">Modo Infinito 🎮</button>
-    <div id="infiniteWins" class="infinite-wins">Vitórias consecutivas: 0</div>
-    <button id="nextWordBtn" class="btn-next">Próxima Palavra ➡️</button>
+  <div id="gameContainer">
+    <div id="category">Categoria</div>
+    <canvas id="hangmanCanvas" width="200" height="300"></canvas>
+    <div id="word">_ _ _ _ _</div>
+    <div id="wordDefinition">Definição aparecerá aqui</div>
+    <div id="letters"></div>
+    <div id="message"></div>
+    <div id="infiniteWins"></div>
+
+    <div id="controls">
+      <button id="infiniteBtn">Modo Infinito</button>
+      <button id="nextWordBtn">Próxima Palavra</button>
+      <button id="themeToggle">☀️ Modo Claro</button>
+    </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

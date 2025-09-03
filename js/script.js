@@ -73,18 +73,19 @@ async function fetchRandomWord() {
 }
 
 async function fetchWordDefinition(word) {
-  try {
-    const cleanWord = removeAccents(word.toLowerCase());
-    const response = await fetch(`https://api.dicionario-aberto.net/word/${cleanWord}`);
-    const data = await response.json();
-    if (data.length > 0 && data[0].art.length > 0) {
-      return data[0].art[0].def;
+  const variants = [removeAccents(word.toLowerCase()), word.toLowerCase()];
+  for (let w of variants) {
+    try {
+      const response = await fetch(`https://api.dicionario-aberto.net/word/${w}`);
+      const data = await response.json();
+      if (data.length > 0 && data[0].art.length > 0) {
+        return data[0].art[0].def;
+      }
+    } catch (error) {
+      console.error("Erro ao buscar definição:", error);
     }
-    return "Sem definição encontrada.";
-  } catch (error) {
-    console.error("Erro ao buscar definição:", error);
-    return "Sem definição encontrada.";
   }
+  return "Definição não disponível no momento.";
 }
 
 // ------------------- DAILY WORD -------------------
@@ -191,7 +192,7 @@ function disableButtons(){
 function drawBase(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.lineWidth = 4;
-  ctx.strokeStyle = "#eee";
+  ctx.strokeStyle = document.body.classList.contains("light-theme") ? "#111" : "#eee";
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(10, 240); ctx.lineTo(190, 240); ctx.stroke();
@@ -216,9 +217,10 @@ function drawLineAnimated(x1,y1,x2,y2,duration=200){
 }
 
 function drawHangman(errors){
-  ctx.lineWidth=4; ctx.strokeStyle="#eee"; ctx.lineCap="round";
+  ctx.lineWidth=4; ctx.strokeStyle = document.body.classList.contains("light-theme") ? "#111" : "#eee";
+  ctx.lineCap="round";
   switch(errors){
-    case 1: ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.fillStyle="#444"; ctx.fill(); ctx.stroke(); break;
+    case 1: ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.fillStyle=document.body.classList.contains("light-theme")?"#111":"#444"; ctx.fill(); ctx.stroke(); break;
     case 2: drawLineAnimated(120,80,120,140); break;
     case 3: drawLineAnimated(120,100,90,120); break;
     case 4: drawLineAnimated(120,100,150,120); break;
