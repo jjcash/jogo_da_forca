@@ -1,0 +1,82 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 5vw;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+h1 {
+  margin-bottom: 10px;
+  font-size: calc(24px + 1vw);
+}
+
+#category {
+  font-size: calc(16px + 0.5vw);
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #0077cc;
+}
+
+#hangmanCanvas {
+  border: 2px solid #555;
+  background: #fff;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+#word {
+  font-size: calc(24px + 1vw);
+  letter-spacing: 0.5em;
+  margin-bottom: 20px;
+  word-break: break-word;
+}
+
+#letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+#letters button {
+  width: 45px;
+  height: 45px;
+  font-size: calc(14px + 0.5vw);
+  border: none;
+  background: #f0f0f0;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+
+#letters button:hover:not(:disabled) {
+  background: #ddd;
+  transform: scale(1.05);
+}
+
+#letters button:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#message {
+  font-size: calc(18px + 1vw);
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+#message.win {
+  color: green;
+}
+
+#message.lose {
+  color: red;
+}
