@@ -95,6 +95,23 @@ button:disabled {
   padding: 6px 10px;
 }
 
+/* ----------------- Botão de toggle tema ----------------- */
+#themeToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s;
+}
+
+#themeToggle:hover {
+  transform: scale(1.2);
+}
+
 /* ----------------- Modo claro ----------------- */
 body.light-theme {
   background-color: #f5f5f5;

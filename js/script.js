@@ -44,19 +44,19 @@ const themeToggleBtn = document.getElementById("themeToggle");
 
 if(localStorage.getItem("theme") === "light") {
   document.body.classList.add("light-theme");
-  themeToggleBtn.textContent = "🌙 Modo Escuro";
+  themeToggleBtn.textContent = "☀️";
 } else {
-  themeToggleBtn.textContent = "☀️ Modo Claro";
+  themeToggleBtn.textContent = "🌙";
 }
 
 themeToggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
   if(document.body.classList.contains("light-theme")){
     localStorage.setItem("theme", "light");
-    themeToggleBtn.textContent = "🌙 Modo Escuro";
+    themeToggleBtn.textContent = "☀️";
   } else {
     localStorage.setItem("theme", "dark");
-    themeToggleBtn.textContent = "☀️ Modo Claro";
+    themeToggleBtn.textContent = "🌙";
   }
 });
 
@@ -159,7 +159,6 @@ function checkEnd(){
 
   if(!normalizedWord.split("").some(l=>!normalizedCorrect.includes(l))){
     messageDiv.textContent = "🎉 Você ganhou!";
-    messageDiv.classList.add("win");
     soundWin.play();
     disableButtons();
     createConfetti();
@@ -173,7 +172,6 @@ function checkEnd(){
 
   } else if(errors >= maxErrors){
     messageDiv.textContent = `❌ Você perdeu! A palavra era ${word}`;
-    messageDiv.classList.add("lose");
     disableButtons();
 
     if(categoryDiv.textContent === "Modo Infinito") {
@@ -198,35 +196,6 @@ function drawBase(){
   ctx.moveTo(10, 240); ctx.lineTo(190, 240); ctx.stroke();
   ctx.beginPath();
   ctx.moveTo(40, 240); ctx.lineTo(40, 20); ctx.lineTo(120,20); ctx.lineTo(120,40); ctx.stroke();
-}
-
-function drawLineAnimated(x1,y1,x2,y2,duration=200){
-  let start=null;
-  function animate(timestamp){
-    if(!start) start=timestamp;
-    const progress=Math.min((timestamp-start)/duration,1);
-    const cx=x1+(x2-x1)*progress;
-    const cy=y1+(y2-y1)*progress;
-    ctx.beginPath();
-    ctx.moveTo(x1,y1);
-    ctx.lineTo(cx,cy);
-    ctx.stroke();
-    if(progress<1) requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-}
-
-function drawHangman(errors){
-  ctx.lineWidth=4; ctx.strokeStyle = document.body.classList.contains("light-theme") ? "#111" : "#eee";
-  ctx.lineCap="round";
-  switch(errors){
-    case 1: ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.fillStyle=document.body.classList.contains("light-theme")?"#111":"#444"; ctx.fill(); ctx.stroke(); break;
-    case 2: drawLineAnimated(120,80,120,140); break;
-    case 3: drawLineAnimated(120,100,90,120); break;
-    case 4: drawLineAnimated(120,100,150,120); break;
-    case 5: drawLineAnimated(120,140,90,180); break;
-    case 6: drawLineAnimated(120,140,150,180); break;
-  }
 }
 
 // ------------------- CONFETTI -------------------
