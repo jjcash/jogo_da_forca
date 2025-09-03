@@ -186,16 +186,37 @@ function disableButtons(){
   document.querySelectorAll("#letters button").forEach(b=>b.disabled=true);
 }
 
-// ------------------- DRAWING -------------------
+// ------------------- DRAWING SIMPLIFICADO -------------------
 function drawBase(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.lineWidth = 4;
   ctx.strokeStyle = document.body.classList.contains("light-theme") ? "#111" : "#eee";
   ctx.lineCap = "round";
+  // Base
   ctx.beginPath();
-  ctx.moveTo(10, 240); ctx.lineTo(190, 240); ctx.stroke();
+  ctx.moveTo(10, 240); 
+  ctx.lineTo(190, 240); 
+  ctx.stroke();
+  // Poste
   ctx.beginPath();
-  ctx.moveTo(40, 240); ctx.lineTo(40, 20); ctx.lineTo(120,20); ctx.lineTo(120,40); ctx.stroke();
+  ctx.moveTo(40, 240); 
+  ctx.lineTo(40, 20); 
+  ctx.lineTo(120,20); 
+  ctx.lineTo(120,40); 
+  ctx.stroke();
+}
+
+function drawHangman(errors){
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = document.body.classList.contains("light-theme") ? "#111" : "#eee";
+  ctx.lineCap = "round";
+
+  if(errors >= 1){ ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.stroke(); }
+  if(errors >= 2){ ctx.beginPath(); ctx.moveTo(120,80); ctx.lineTo(120,140); ctx.stroke(); }
+  if(errors >= 3){ ctx.beginPath(); ctx.moveTo(120,100); ctx.lineTo(90,120); ctx.stroke(); }
+  if(errors >= 4){ ctx.beginPath(); ctx.moveTo(120,100); ctx.lineTo(150,120); ctx.stroke(); }
+  if(errors >= 5){ ctx.beginPath(); ctx.moveTo(120,140); ctx.lineTo(90,180); ctx.stroke(); }
+  if(errors >= 6){ ctx.beginPath(); ctx.moveTo(120,140); ctx.lineTo(150,180); ctx.stroke(); }
 }
 
 // ------------------- CONFETTI -------------------
