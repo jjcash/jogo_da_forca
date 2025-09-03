@@ -1,10 +1,19 @@
+// ------------------- UTILIDADES -------------------
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function normalizeLetter(letter){
+  return removeAccents(letter.toUpperCase());
+}
+
 // ------------------- CATEGORIES -------------------
 const categories = ["Frutas","Animais","Países","Objetos"];
 const categoryWords = {
-  "Frutas": ["ABACAXI","BANANA","CEREJA","DAMASCO","FRAMBOESA","GOIABA","LARANJA","MELANCIA","MORANGO","PESSEGO","UVA","KIWI","MANGA","PERA","LIMAO"],
-  "Animais": ["CACHORRO","GATO","ELEFANTE","GIRAFA","LEAO","TIGRE","COBRA","MACACO","RAPOSA","CAMELO","CAVALO","PORCO","PATO","ZEBRA","LOBO"],
-  "Países": ["BRASIL","PORTUGAL","ANGOLA","MOZAMBIQUE","JAPAO","CHINA","ARGENTINA","MEXICO","CANADA","ALEMANHA","FRANCA","ITALIA","ESPANHA","NIGERIA","INDIA"],
-  "Objetos": ["CADEIRA","MESA","COMPUTADOR","CELULAR","GARRAFA","LIVRO","MOCHILA","CANETA","TECLADO","VENTILADOR","RELOGIO","TELEVISAO","SOFA","PRATO","JANELA"]
+  "Frutas": ["ABACAXI","BANANA","CEREJA","DAMASCO","FRAMBOESA","GOIABA","LARANJA","MELANCIA","MORANGO","PESSEGO","UVA","KIWI","MANGA","PERA","LIMÃO"],
+  "Animais": ["CACHORRO","GATO","ELEFANTE","GIRAFA","LEÃO","TIGRE","COBRA","MACACO","RAPOSA","CAMELO","CAVALO","PORCO","PATO","ZEBRA","LOBO"],
+  "Países": ["BRASIL","PORTUGAL","ANGOLA","MOZAMBIQUE","JAPÃO","CHINA","ARGENTINA","MÉXICO","CANADÁ","ALEMANHA","FRANÇA","ITÁLIA","ESPANHA","NIGÉRIA","ÍNDIA"],
+  "Objetos": ["CADEIRA","MESA","COMPUTADOR","CELULAR","GARRAFA","LIVRO","MOCHILA","CANETA","TECLADO","VENTILADOR","RELÓGIO","TELEVISÃO","SOFÁ","PRATO","JANELA"]
 };
 
 // ------------------- GAME VARIABLES -------------------
@@ -65,7 +74,8 @@ async function fetchRandomWord() {
 
 async function fetchWordDefinition(word) {
   try {
-    const response = await fetch(`https://api.dicionario-aberto.net/word/${word.toLowerCase()}`);
+    const cleanWord = removeAccents(word.toLowerCase());
+    const response = await fetch(`https://api.dicionario-aberto.net/word/${cleanWord}`);
     const data = await response.json();
     if (data.length > 0 && data[0].art.length > 0) {
       return data[0].art[0].def;
@@ -73,7 +83,7 @@ async function fetchWordDefinition(word) {
     return "Sem definição encontrada.";
   } catch (error) {
     console.error("Erro ao buscar definição:", error);
-    return "Erro ao buscar definição.";
+    return "Sem definição encontrada.";
   }
 }
 
@@ -104,7 +114,11 @@ function alreadyPlayedToday() {
 
 // ------------------- GAME DISPLAY -------------------
 function showWord() {
-  wordDiv.textContent = word.split("").map(l => correctLetters.includes(l)?l:"_").join(" ");
+  const normalizedCorrect = correctLetters.map(l => normalizeLetter(l));
+  wordDiv.textContent = word.split("").map(l => {
+    const normalizedLetter = normalizeLetter(l);
+    return normalizedCorrect.includes(normalizedLetter) ? l : "_";
+  }).join(" ");
 }
 
 function createButtons() {
@@ -124,7 +138,9 @@ infiniteWinsDiv.textContent = `Vitórias consecutivas: ${infiniteWins}`;
 
 function play(letter, btn){
   btn.disabled = true;
-  if(word.includes(letter)){
+  const normalizedLetter = normalizeLetter(letter);
+  const normalizedWord = removeAccents(word);
+  if(normalizedWord.includes(normalizedLetter)){
     correctLetters.push(letter);
     soundClick.play();
   } else {
@@ -137,7 +153,10 @@ function play(letter, btn){
 }
 
 function checkEnd(){
-  if(!word.split("").some(l=>!correctLetters.includes(l))){
+  const normalizedWord = removeAccents(word);
+  const normalizedCorrect = correctLetters.map(l=>normalizeLetter(l));
+
+  if(!normalizedWord.split("").some(l=>!normalizedCorrect.includes(l))){
     messageDiv.textContent = "🎉 Você ganhou!";
     messageDiv.classList.add("win");
     soundWin.play();
