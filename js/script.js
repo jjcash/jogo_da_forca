@@ -15,9 +15,11 @@ let errors = 0;
 const maxErrors = 6;
 
 const wordDiv = document.getElementById("word");
+const definitionDiv = document.getElementById("wordDefinition");
 const lettersDiv = document.getElementById("letters");
 const messageDiv = document.getElementById("message");
 const categoryDiv = document.getElementById("category");
+const infiniteWinsDiv = document.getElementById("infiniteWins");
 
 const canvas = document.getElementById("hangmanCanvas");
 const ctx = canvas.getContext("2d");
@@ -27,6 +29,27 @@ canvas.height = canvas.width * 1.5;
 const soundClick = new Audio("sounds/click.mp3");
 const soundError = new Audio("sounds/error.mp3");
 const soundWin = new Audio("sounds/win.mp3");
+
+// ------------------- THEME TOGGLE -------------------
+const themeToggleBtn = document.getElementById("themeToggle");
+
+if(localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light-theme");
+  themeToggleBtn.textContent = "🌙 Modo Escuro";
+} else {
+  themeToggleBtn.textContent = "☀️ Modo Claro";
+}
+
+themeToggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+  if(document.body.classList.contains("light-theme")){
+    localStorage.setItem("theme", "light");
+    themeToggleBtn.textContent = "🌙 Modo Escuro";
+  } else {
+    localStorage.setItem("theme", "dark");
+    themeToggleBtn.textContent = "☀️ Modo Claro";
+  }
+});
 
 // ------------------- WORD API -------------------
 async function fetchRandomWord() {
@@ -40,7 +63,21 @@ async function fetchRandomWord() {
   }
 }
 
-// ------------------- WORD DAILY -------------------
+async function fetchWordDefinition(word) {
+  try {
+    const response = await fetch(`https://api.dicionario-aberto.net/word/${word.toLowerCase()}`);
+    const data = await response.json();
+    if (data.length > 0 && data[0].art.length > 0) {
+      return data[0].art[0].def;
+    }
+    return "Sem definição encontrada.";
+  } catch (error) {
+    console.error("Erro ao buscar definição:", error);
+    return "Erro ao buscar definição.";
+  }
+}
+
+// ------------------- DAILY WORD -------------------
 async function getDailyWordByCategory(categoryName) {
   const today = new Date().toISOString().split("T")[0];
   const storageKey = `word_${categoryName}_${today}`;
@@ -82,6 +119,9 @@ function createButtons() {
 }
 
 // ------------------- GAME LOGIC -------------------
+let infiniteWins = parseInt(localStorage.getItem("infiniteWins")) || 0;
+infiniteWinsDiv.textContent = `Vitórias consecutivas: ${infiniteWins}`;
+
 function play(letter, btn){
   btn.disabled = true;
   if(word.includes(letter)){
@@ -104,10 +144,23 @@ function checkEnd(){
     disableButtons();
     createConfetti();
     drawConfetti();
+
+    if(categoryDiv.textContent === "Modo Infinito") {
+      infiniteWins++;
+      localStorage.setItem("infiniteWins", infiniteWins);
+      infiniteWinsDiv.textContent = `Vitórias consecutivas: ${infiniteWins}`;
+    }
+
   } else if(errors >= maxErrors){
     messageDiv.textContent = `❌ Você perdeu! A palavra era ${word}`;
     messageDiv.classList.add("lose");
     disableButtons();
+
+    if(categoryDiv.textContent === "Modo Infinito") {
+      infiniteWins = 0;
+      localStorage.setItem("infiniteWins", infiniteWins);
+      infiniteWinsDiv.textContent = `Vitórias consecutivas: ${infiniteWins}`;
+    }
   }
 }
 
@@ -117,8 +170,9 @@ function disableButtons(){
 
 // ------------------- DRAWING -------------------
 function drawBase(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.lineWidth = 4;
-  ctx.strokeStyle = "#555";
+  ctx.strokeStyle = "#eee";
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(10, 240); ctx.lineTo(190, 240); ctx.stroke();
@@ -143,9 +197,9 @@ function drawLineAnimated(x1,y1,x2,y2,duration=200){
 }
 
 function drawHangman(errors){
-  ctx.lineWidth=4; ctx.strokeStyle="#222"; ctx.lineCap="round";
+  ctx.lineWidth=4; ctx.strokeStyle="#eee"; ctx.lineCap="round";
   switch(errors){
-    case 1: ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.fillStyle="#eee"; ctx.fill(); ctx.stroke(); break;
+    case 1: ctx.beginPath(); ctx.arc(120,60,20,0,Math.PI*2); ctx.fillStyle="#444"; ctx.fill(); ctx.stroke(); break;
     case 2: drawLineAnimated(120,80,120,140); break;
     case 3: drawLineAnimated(120,100,90,120); break;
     case 4: drawLineAnimated(120,100,150,120); break;
@@ -201,6 +255,7 @@ async function initDailyGame() {
   word = await getDailyWordByCategory(category);
   showWord();
   createButtons();
+  definitionDiv.textContent = "";
 }
 
 async function initInfiniteGame() {
@@ -210,15 +265,39 @@ async function initInfiniteGame() {
   correctLetters = [];
   lettersDiv.innerHTML = '';
   messageDiv.textContent = '';
-  
+
   word = await fetchRandomWord();
   showWord();
   createButtons();
+
+  const definition = await fetchWordDefinition(word);
+  definitionDiv.textContent = definition;
+}
+
+async function nextInfiniteWord() {
+  errors = 0;
+  correctLetters = [];
+  lettersDiv.innerHTML = '';
+  messageDiv.textContent = '';
+  drawBase();
+
+  word = await fetchRandomWord();
+  showWord();
+  createButtons();
+
+  const definition = await fetchWordDefinition(word);
+  definitionDiv.textContent = definition;
 }
 
 // ------------------- BUTTON EVENTS -------------------
 document.getElementById("infiniteBtn").addEventListener("click", () => {
   initInfiniteGame();
+});
+
+document.getElementById("nextWordBtn").addEventListener("click", () => {
+  if(categoryDiv.textContent === "Modo Infinito") {
+    nextInfiniteWord();
+  }
 });
 
 // Inicia o jogo diário por padrão

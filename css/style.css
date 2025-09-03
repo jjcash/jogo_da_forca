@@ -1,11 +1,13 @@
+/* --- DARK MODE (padrão) --- */
 body {
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  background: #1e1e1e;
   margin: 0;
+  color: #eee;
 }
 
 .container {
@@ -13,57 +15,74 @@ body {
   max-width: 400px;
   width: 90%;
   padding: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   border-radius: 15px;
-  background: #fff;
+  background: #222;
+}
+
+h1 {
+  color: #f9f9f9;
 }
 
 .category {
   font-weight: bold;
   margin-bottom: 10px;
+  color: #f1c40f;
 }
 
 .word {
   font-size: 2em;
   letter-spacing: 10px;
   margin: 15px 0;
+  color: #fff;
+}
+
+.word-definition {
+  margin-top: 10px;
+  font-style: italic;
+  color: #ccc;
+  font-size: 0.9em;
 }
 
 .letters {
   margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .letters button {
-  margin: 3px;
-  padding: 10px 15px;
-  font-size: 1em;
+  margin: 4px;
+  padding: 12px 18px;
+  font-size: 1.1em;
   border: none;
-  background: #90be6d;
+  background: #3498db;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .letters button:hover:not(:disabled) {
-  background: #43aa8b;
+  background: #2980b9;
 }
 
 .letters button:disabled {
-  background: #ccc;
+  background: #555;
   cursor: default;
 }
 
 .message {
   margin: 10px 0;
   font-size: 1.2em;
+  color: #f39c12;
 }
 
 .btn-infinite {
   margin-top: 15px;
-  padding: 12px 20px;
-  font-size: 1em;
-  background: #f3722c;
+  padding: 14px 22px;
+  font-size: 1.05em;
+  background: #e67e22;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -72,11 +91,99 @@ body {
 }
 
 .btn-infinite:hover {
-  background: #f94144;
+  background: #d35400;
+}
+
+.btn-next {
+  margin-top: 10px;
+  padding: 12px 20px;
+  font-size: 1em;
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-next:hover {
+  background: #27ae60;
+}
+
+.infinite-wins {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #f1c40f;
+  font-size: 1em;
 }
 
 canvas {
   margin: 10px 0;
   width: 100%;
   height: auto;
+  background: #1e1e1e;
+  border-radius: 10px;
+}
+
+/* THEME TOGGLE BUTTON */
+.btn-theme {
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  font-size: 0.95em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #888;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.btn-theme:hover {
+  background: #555;
+}
+
+/* --- LIGHT MODE --- */
+body.light-theme {
+  background: #f5f5f5;
+  color: #222;
+}
+
+body.light-theme .container {
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+body.light-theme .letters button {
+  background: #3498db;
+  color: #fff;
+}
+
+body.light-theme .letters button:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+body.light-theme .btn-infinite {
+  background: #e67e22;
+  color: #fff;
+}
+
+body.light-theme .btn-infinite:hover {
+  background: #d35400;
+}
+
+body.light-theme .btn-next {
+  background: #2ecc71;
+  color: #fff;
+}
+
+body.light-theme .btn-next:hover {
+  background: #27ae60;
+}
+
+body.light-theme .message {
+  color: #e67e22;
+}
+
+body.light-theme .category, body.light-theme .infinite-wins {
+  color: #f1c40f;
 }

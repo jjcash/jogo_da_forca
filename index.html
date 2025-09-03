@@ -9,12 +9,17 @@
 <body>
   <div class="container">
     <h1>Jogo da Forca</h1>
+    <button id="themeToggle" class="btn-theme">🌙 Modo Escuro</button>
     <div id="category" class="category"></div>
     <canvas id="hangmanCanvas" width="200"></canvas>
     <div id="word" class="word"></div>
+    <div id="wordDefinition" class="word-definition"></div>
     <div id="letters" class="letters"></div>
     <div id="message" class="message"></div>
+
     <button id="infiniteBtn" class="btn-infinite">Modo Infinito 🎮</button>
+    <div id="infiniteWins" class="infinite-wins">Vitórias consecutivas: 0</div>
+    <button id="nextWordBtn" class="btn-next">Próxima Palavra ➡️</button>
   </div>
 
   <script src="js/script.js"></script>
