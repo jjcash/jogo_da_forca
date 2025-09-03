@@ -1,82 +1,82 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 5vw;
-  background-color: #f2f2f2;
-  color: #333;
-}
-
-h1 {
-  margin-bottom: 10px;
-  font-size: calc(24px + 1vw);
-}
-
-#category {
-  font-size: calc(16px + 0.5vw);
-  margin-bottom: 15px;
-  font-weight: bold;
-  color: #0077cc;
-}
-
-#hangmanCanvas {
-  border: 2px solid #555;
-  background: #fff;
-  width: 100%;
-  max-width: 250px;
-  height: auto;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-#word {
-  font-size: calc(24px + 1vw);
-  letter-spacing: 0.5em;
-  margin-bottom: 20px;
-  word-break: break-word;
-}
-
-#letters {
+  font-family: 'Arial', sans-serif;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  margin: 0;
 }
 
-#letters button {
-  width: 45px;
-  height: 45px;
-  font-size: calc(14px + 0.5vw);
-  border: none;
-  background: #f0f0f0;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: all 0.2s;
+.container {
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border-radius: 15px;
+  background: #fff;
 }
 
-#letters button:hover:not(:disabled) {
-  background: #ddd;
-  transform: scale(1.05);
-}
-
-#letters button:disabled {
-  background: #bbb;
-  cursor: not-allowed;
-  transform: none;
-}
-
-#message {
-  font-size: calc(18px + 1vw);
-  margin-top: 30px;
+.category {
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
-#message.win {
-  color: green;
+.word {
+  font-size: 2em;
+  letter-spacing: 10px;
+  margin: 15px 0;
 }
 
-#message.lose {
-  color: red;
+.letters {
+  margin: 15px 0;
+}
+
+.letters button {
+  margin: 3px;
+  padding: 10px 15px;
+  font-size: 1em;
+  border: none;
+  background: #90be6d;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.letters button:hover:not(:disabled) {
+  background: #43aa8b;
+}
+
+.letters button:disabled {
+  background: #ccc;
+  cursor: default;
+}
+
+.message {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.btn-infinite {
+  margin-top: 15px;
+  padding: 12px 20px;
+  font-size: 1em;
+  background: #f3722c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-infinite:hover {
+  background: #f94144;
+}
+
+canvas {
+  margin: 10px 0;
+  width: 100%;
+  height: auto;
 }
